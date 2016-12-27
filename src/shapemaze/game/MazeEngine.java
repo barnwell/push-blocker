@@ -53,6 +53,7 @@ public class MazeEngine extends JPanel {
     private int livesRemaining = 2;
     private Font font;
     private String statusMessage = "";
+    private String difficultyLevel = "";
     private String level =
               "###########################\n"
             + "#            #     #      #\n"
@@ -91,12 +92,15 @@ public class MazeEngine extends JPanel {
         switch(difficulty){
             case EASY: 
                 numberOfBots = 5;
+                difficultyLevel = "Easy Mode";
                 break;
             case NORMAL: 
                 numberOfBots = 10;
+                difficultyLevel = "Normal Mode";
                 break;
             case HARD: 
                 numberOfBots = 20;
+                difficultyLevel = "Hard (YOU WILL LOSE) Mode";
                 break;
             default: System.err.println("Invalid difficulty level selected");
         }
@@ -199,6 +203,8 @@ public class MazeEngine extends JPanel {
         g.setFont(font.deriveFont(25f));  
         g.setColor(new Color(0, 0, 0));
         g.drawString(statusMessage, OFFSET, 25);
+        g.drawString(difficultyLevel, OFFSET + 400, 25); 
+        
     }
 
     private void setNumberOfAiBots(int number) {
