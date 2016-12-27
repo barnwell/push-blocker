@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import net.jasonbarnwell.java.Basics;
@@ -54,7 +55,8 @@ public class MazeEngine extends JPanel {
     private Font font;
     private String statusMessage = "";
     private String difficultyLevel = "";
-    private String level =
+    
+    private final String[] mapsArray = {   //27*16 grids
               "###########################\n"
             + "#            #     #      #\n"
             + "#    #### ##     #   ##   #\n"
@@ -70,7 +72,46 @@ public class MazeEngine extends JPanel {
             + "#                   ##    #\n"
             + "## ### ### # ##  ##   $   #\n"
             + "#    #          ##        #\n"
-            + "###########################\n";
+            + "###########################\n"
+            , 
+                "###########################\n"
+               +"#       #           #     #\n"
+               +"#           #    #    #   #\n"
+               +"#       #    ### ##     ###\n"
+               +"#   #   #   $         #   #\n"
+               +"#   #   ##  #     # # ## ##\n"
+               +"###   # #####  ###    #   #\n"
+               +"#                #        #\n"
+               +"#  # #    ##   ###   ## ###\n"
+               +"#  # #  ##            #   #\n"
+               +"#       #      .  #  ##   #\n"
+               +"## ##  ## ### ###       # #\n"
+               +"#   #     #       ## #  # #\n"
+               +"#   #  #  # ##    ##    # #\n"
+               +"#      #       #      #   #\n"
+               +"###########################\n"
+            , 
+                "###########################\n"
+               +"#       #           #     #\n"
+               +"#           #    #    #   #\n"
+               +"#       #    ### ##     ###\n"
+               +"#   #   #             #   #\n"
+               +"#   #   ##  #     # # ## ##\n"
+               +"###   # #####  ###    #.  #\n"
+               +"#                #        #\n"
+               +"#  # #    ##   ###   ## ###\n"
+               +"#  # #  ##  $         #   #\n"
+               +"#       #         #  ##   #\n"
+               +"## ##  ## ### ###       # #\n"
+               +"#   #     #       ## #  # #\n"
+               +"#   #  #  # ##    ##    # #\n"
+               +"#      #       #      #   #\n"
+               +"###########################\n"
+    
+    
+    };
+    
+    private String map = mapsArray[0];
 
     public MazeEngine() {
         try { font = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/OpenSans-Regular.TTF")); } 
@@ -113,11 +154,21 @@ public class MazeEngine extends JPanel {
     public int getBoardHeight() {
         return this.h;
     }
+    
+    public static String getRandomMap(String[] array) {
+        int rnd = new Random().nextInt(array.length);
+        return array[rnd];
+    }
 
     public final void initWorld() {
         
         int x = OFFSET;
         int y = OFFSET;
+        
+        
+        map= getRandomMap(mapsArray);
+        
+        
         
         Wall wall;
         Shape b;
@@ -128,9 +179,9 @@ public class MazeEngine extends JPanel {
         
         randomizePlayerPosition();
 
-        for (int i = 0; i < level.length(); i++) {
+        for (int i = 0; i < map.length(); i++) {
 
-            char item = level.charAt(i);
+            char item = map.charAt(i);
 
             if (item == '\n') {
                 y += SPACE;
@@ -208,17 +259,17 @@ public class MazeEngine extends JPanel {
     }
 
     private void setNumberOfAiBots(int number) {
-        level = level.replace("!", " ");
-        int totalSpaces = level.length() - level.replace(" ", "").length();  
+        map = map.replace("!", " ");
+        int totalSpaces = map.length() - map.replace(" ", "").length();  
         
         for(int j = 0; j<number; j++){  
         int randomInt = Basics.randomInt(totalSpaces);
             for (int i=totalSpaces; i > 0; i--) {
-                if(level.charAt(i) == ' ' && i <= randomInt){ 
-                    level = level.substring(0, i) + "!" + level.substring(i + 1);
+                if(map.charAt(i) == ' ' && i <= randomInt){ 
+                    map = map.substring(0, i) + "!" + map.substring(i + 1);
                     break;
                 }
-                else if(level.charAt(i) != ' '){
+                else if(map.charAt(i) != ' '){
                     randomInt++;
                 }
             }
@@ -228,12 +279,12 @@ public class MazeEngine extends JPanel {
     private void resetPlayer(){ 
         int x=OFFSET, y=OFFSET; 
         randomizePlayerPosition();
-        for (int i = 0; i < level.length(); i++) {
-            if (level.charAt(i) == '\n') {
+        for (int i = 0; i < map.length(); i++) {
+            if (map.charAt(i) == '\n') {
                 y+=SPACE;
                 x = OFFSET;
             }
-            else if (level.charAt(i) == '@') {
+            else if (map.charAt(i) == '@') {
                 player = new Player(x, y, imageHandler);
                 x += SPACE; 
             }
@@ -246,21 +297,21 @@ public class MazeEngine extends JPanel {
      
     
     private void randomizePlayerPosition() {
-        int totalSpaces = level.length() - level.replace(" ", "").length(); 
+        int totalSpaces = map.length() - map.replace(" ", "").length(); 
         int randomInt = Basics.randomInt(totalSpaces);
         
-        for (int i=0; i < level.length(); i++) {  
-            if(level.charAt(i) == '@'){ 
-                level = level.substring(0, i) + " " + level.substring(i + 1); 
+        for (int i=0; i < map.length(); i++) {  
+            if(map.charAt(i) == '@'){ 
+                map = map.substring(0, i) + " " + map.substring(i + 1); 
             }
         } 
         
         for (int i=0; i < totalSpaces; i++) { 
-            if(level.charAt(i) == ' ' && i >= randomInt){ 
-                level = level.substring(0, i) + "@" + level.substring(i + 1);
+            if(map.charAt(i) == ' ' && i >= randomInt){ 
+                map = map.substring(0, i) + "@" + map.substring(i + 1);
                 break;
             } 
-            else if(level.charAt(i) != ' '){
+            else if(map.charAt(i) != ' '){
                 totalSpaces++;
             }
         }  
@@ -277,7 +328,7 @@ public class MazeEngine extends JPanel {
         else if(loss){  
             g.drawImage(imageHandler.getGameOverImageIcon().getImage(), OFFSET, OFFSET, null);
             huntTimerTask.cancel();
-            statusMessage = "You Lose";
+            statusMessage = "You Lose";  
             return true;
         }
         return false;
