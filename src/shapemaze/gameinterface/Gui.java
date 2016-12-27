@@ -49,6 +49,7 @@ public class Gui extends JFrame implements MouseListener{
     private Font tinyFont, tinyAltFont, smallFont, smallAltFont, mediumFont,mediumAltFont, bigAltFont, bigFont, hugeFont, hugeAltFont;
     private MazeEngine newGamePanel;
     private int difficulty = MazeEngine.NORMAL;
+    private final String versionNumber = "v0.92";
     
     private boolean fullscreen = false;
      
@@ -101,7 +102,7 @@ public class Gui extends JFrame implements MouseListener{
         JLabel name = new JLabel("ShapeMaze");
         name.setFont(hugeAltFont);
         name.setForeground(Color.lightGray);
-        JLabel version = new JLabel(" v0.9"); 
+        JLabel version = new JLabel(" "+versionNumber); 
         version.setFont(bigAltFont);
         version.setForeground(Color.lightGray);
         
@@ -354,7 +355,8 @@ public class Gui extends JFrame implements MouseListener{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         interfaceEngine.getBackgroundMusic().setVolume(Sound.LOW);
-        interfaceEngine.getBackgroundMusic().loop();
+        interfaceEngine.getBackgroundMusic().loop(); 
+        this.setTitle("Push Blocker "+versionNumber );
     }
      
     private void handleVolumeChange(MouseEvent e){
