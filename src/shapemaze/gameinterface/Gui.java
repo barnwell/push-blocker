@@ -271,7 +271,7 @@ public class Gui extends JFrame implements MouseListener{
         JTextArea helpDescriptionLabel = new JTextArea(); 
         helpDescriptionLabel.setFont(smallFont); 
         helpDescriptionLabel.setOpaque(false); 
-        helpDescriptionLabel.setText("For immediate help, please call 911 or your nearest police station.");  
+        helpDescriptionLabel.setText("You can search google for Jason Barnwell and ask him for assistance");  
         helpDescriptionLabel.setEditable(false);
         helpDescriptionLabel.setWrapStyleWord(true);
         helpDescriptionLabel.setLineWrap(true); 
